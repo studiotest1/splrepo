@@ -1,0 +1,69 @@
+DEFINE NAMESPACE ns_1_csv_log_txt DESCRIPTION 'NS 1 - csv_log.txt' TYPE SECTION  SOLR 
+  BEGINS WITH /policyID,statecode,county,eq_site_limit,hu_site_limit,fl_site_limit,fr_site_limit,tiv_2011,tiv_2012,eq_site_deductible,hu_site_deductible,fl_site_deductible,fr_site_deductible,point_latitude,point_longitude,line,construction,point_granularity/
+  FILEPATTERN /csv_log.txt/
+;
+
+DEFINE NAMESPACE unparsed DESCRIPTION 'Unparsed' TYPE UNPARSED 
+;
+
+DEFINE TABLE tbl_csv_log_txt NAMESPACE ns_1_csv_log_txt 
+ICON csv_withheader /,/
+
+COLUMN c91d4e5_policyid  [i(64):n]  <label='policyID'> AS  'policyID'
+COLUMN c91d4e5_statecode  [s(1024):n]  <label='statecode'> AS  'statecode'
+COLUMN c91d4e5_county  [s(1024):n]  <label='county'> AS  'county'
+COLUMN c91d4e5_eq_site_limit  [r(64):n]  <label='eq_site_limit'> AS  'eq_site_limit'
+COLUMN c91d4e5_hu_site_limit  [r(64):n]  <label='hu_site_limit'> AS  'hu_site_limit'
+COLUMN c91d4e5_fl_site_limit  [r(64):n]  <label='fl_site_limit'> AS  'fl_site_limit'
+COLUMN c91d4e5_fr_site_limit  [r(64):n]  <label='fr_site_limit'> AS  'fr_site_limit'
+COLUMN c91d4e5_tiv_2011  [r(64):n]  <label='tiv_2011'> AS  'tiv_2011'
+COLUMN c91d4e5_tiv_2012  [r(64):n]  <label='tiv_2012'> AS  'tiv_2012'
+COLUMN c91d4e5_eq_site_deductible  [i(64):n]  <label='eq_site_deductible'> AS  'eq_site_deductible'
+COLUMN c91d4e5_hu_site_deductible  [r(64):n]  <label='hu_site_deductible'> AS  'hu_site_deductible'
+COLUMN c91d4e5_fl_site_deductible  [i(64):n]  <label='fl_site_deductible'> AS  'fl_site_deductible'
+COLUMN c91d4e5_fr_site_deductible  [i(64):n]  <label='fr_site_deductible'> AS  'fr_site_deductible'
+COLUMN c91d4e5_point_latitude  [r(64):n]  <label='point_latitude'> AS  'point_latitude'
+COLUMN c91d4e5_point_longitude  [r(64):n]  <label='point_longitude'> AS  'point_longitude'
+COLUMN c91d4e5_line  [s(1024):n]  <label='line'> AS  'line'
+COLUMN c91d4e5_construction  [s(1024):n]  <label='construction'> AS  'construction'
+COLUMN c91d4e5_point_granularity  [i(64):n]  <label='point_granularity'> AS  'point_granularity'
+COLUMN sysid1 (sys.static) [s(128):nn]  <facet='G', label='Serial Number', sysid1=1, linked=1>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN obs_url (obs.static) [s(2048):n]  <obs_url=1, facet='G', label='Bundle URL'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN obs_ts (obs.static) [i(64):nn]  <ts=1, facet='G', units='epoch'>  WITH SOLRMAPPING (name='obs_date', datatype='tdate', multivalued='false')
+COLUMN source  [s(2048):n]  <facet='L', label='Data Source'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+
+ADD_CONTEXT(sysid1, obs_ts, obs_url, source)
+
+
+
+;
+
+DEFINE TABLE unparsed NAMESPACE unparsed 
+ICON list_basic
+LINEGRAB /(.*)/
+
+COLUMN sysid1 (sys.static) [s(128):nn]  <facet='G', label='Serial Number', sysid1=1, linked=1>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN obs_date_str (obs.static) [s(64):n]  <facet='G', label='System Time'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN namespace_id  [s(2048):n]  <fragment_id=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false', uniquefielddef='true')
+COLUMN begin_offset  [i(64):n]  <begin_offset=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN obs_size  [i(64):n]  <obs_size=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN start_time  [i(64):n]  <label='Session Start Time'> 
+COLUMN obs_url (obs.static) [s(2048):n]  <obs_url=1, facet='G', label='Bundle URL'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN duration  [i(64):n]  <label='Session Duration'> 
+COLUMN content  [s(2048):n]  <content=1, facet='Z'>  WITH SOLRMAPPING (datatype='text_en', multivalued='false')
+COLUMN namespace  [s(2048):n]  <namespace=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN sess_name  [s(128):n]  <label='Session Name'> 
+COLUMN component  [s(64):n]  <label='Component'> 
+COLUMN obs_ts (obs.static) [i(64):nn]  <ts=1, facet='G', units='epoch'>  WITH SOLRMAPPING (name='obs_date', datatype='tdate', multivalued='false')
+COLUMN type  [s(20):n]  <type=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN sess_count  [i(64):n]  <label='Session Count'> 
+COLUMN uploaded_by (obs.static) [s(2048):n]  <label='user', uploaded_by=1>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN filename  [s(2048):n]  <filename=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN bundle_type (sys.static) [s(128):nn]  <facet='G', label='Bundle Type'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN end_time  [i(64):n]  <label='Session End Time'> 
+
+ADD_CONTEXT(obs_url, obs_ts, sysid1, obs_size, obs_date_str, source)
+
+
+
+;
