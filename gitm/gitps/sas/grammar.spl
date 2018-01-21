@@ -6,34 +6,6 @@ DEFINE NAMESPACE ns_1_firewall_log DESCRIPTION 'NS 1 - firewall.log' TYPE EVENT 
 DEFINE NAMESPACE unparsed DESCRIPTION 'Unparsed' TYPE UNPARSED 
 ;
 
-DEFINE TABLE tbl_firewall_log NAMESPACE ns_1_firewall_log 
-ICON list_basic
-LINEGRAB /(\w+\s+\d+\s+\d+:\d+:\d+)\s+(.*?[^\.*?]:)?(.*$)/
-
-COLUMN cf562f7_date_time  [s(256):n]  <label='date_time'>  AS 1
-COLUMN cf562f7_col1_s  [s(1024):n]  <label='col1'>  AS 2
-COLUMN cf562f7_col2_s  [s(1024):n]  <label='col2'>  AS 3
-COLUMN severity  [s(2048):n]  <label='severity', severity=1> 
-COLUMN sysid1 (sys.static) [s(128):nn]  <facet='G', label='Serial Number', sysid1=1, linked=1>  WITH SOLRMAPPING (datatype='string', multivalued='false')
-COLUMN evt_year_str  [s(2048):n] 
-COLUMN obs_size  [i(64):n]  <obs_size=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
-COLUMN evt_text  [s(2048):n]  <label='Event Text'> 
-COLUMN obs_url (obs.static) [s(2048):n]  <obs_url=1, facet='G', label='Bundle URL'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
-COLUMN obs_ts (obs.static) [i(64):nn]  <ts=1, facet='G', units='epoch'>  WITH SOLRMAPPING (name='obs_date', datatype='tdate', multivalued='false')
-COLUMN evt_date_str  [s(128):n]  <facet='L', label='Event Date'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
-COLUMN source  [s(2048):n]  <facet='L', label='Data Source'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
-COLUMN evt_epoch  [i(64):n]  <facet='G', units='epoch'>  WITH SOLRMAPPING (name='evt_date', datatype='tdate', multivalued='false')
-
-ADD_CONTEXT(sysid1, obs_ts, obs_url, source)
-
-COLCALC(evt_year_str,ADJYEAR,obs_ts,cf562f7_date_time,'MMM dd hh:mm:ss',43200000,'')
-COLJOIN(evt_date_str,evt_year_str,' ',cf562f7_date_time)
-COLDROP(evt_year_str)
-COLCALC(evt_epoch,SDF2EPOCH,'yyyy MMM dd hh:mm:ss',evt_date_str)
-COLCOPY(evt_epoch,obs_ts)
-
-;
-
 DEFINE TABLE unparsed NAMESPACE unparsed 
 ICON list_basic
 LINEGRAB /(.*)/
@@ -58,7 +30,7 @@ COLUMN filename  [s(2048):n]  <filename=1, facet='Z'>  WITH SOLRMAPPING (datatyp
 COLUMN bundle_type (sys.static) [s(128):nn]  <facet='G', label='Bundle Type'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
 COLUMN end_time  [i(64):n]  <label='Session End Time'> 
 
-ADD_CONTEXT(obs_url, obs_ts, sysid1, obs_size, obs_date_str, source)
+ADD_CONTEXT(obs_url,obs_ts,sysid1,obs_size,obs_date_str,source)
 
 
 
