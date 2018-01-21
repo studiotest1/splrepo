@@ -1,0 +1,31 @@
+ec='glassbeam' 
+fn=f.name 
+customer=l.customer 
+product=l.product 
+schema=l.schema 
+obs_url=b.name 
+obs_date_str_a='20160101' 
+obs_date_str_b=b.grep /.*/ /^Action\s+Plan\s*\:\s*\*\s*(\d{2}\/\d{2}\/\d{4}\s+\d{2}\:\d{2}\:\d{2}).*/ 
+obs_ts_a=t.sdf2epoch 'yyyyMMdd', obs_date_str_a 
+obs_ts_b=t.sdf2epoch 'MM/dd/yyyy HH:mm:ss', obs_date_str_b 
+obs_ts=s.coalesce(obs_ts_b,obs_ts_a) 
+obs_date_str=s.coalesce(obs_date_str_b,obs_date_str_a) 
+obs_size=b.size 
+(sysid1_a)=l.grepobs_url /.*\/(?:extensibility\.)?([^_]+).*/ 
+sysid1_b=b.grep /.*/ /^(?i)FL\s*\#\s*\:\s*(.*).*/ 
+sysid1=s.coalesce(sysid1_b,sysid1_a) 
+cur_sys_conf=b.grep /.*EvtApplication.*|.*EvtApplication_\d+.*|.*EvtCustomerLog\_Today.*|.*EvtCustomerLog_\d+.*|.*EvtSystem.*|.*EvtSystem\_\d+.*/ /^\w+\s+\d+\-\d+\-\d+\s+\d+\:\d+\:\d+\s+.+?\s+\d+\s+[Cc]urrent\s+[Ss]ystem\s+[Cc]onfiguration\:\s+(.*)/ 
+(computername,version,country,hospitalname,city)=l.grepcur_sys_conf /^[^;]*\;[^;]*\;\s*[Cc]omputer[Nn]ame\=([^;]*)\;\s*[Vv]ersion\=([^;]*)\;[^;]*\;[^;]*\;[^;]*\;\s*[Cc]ountry\=([^;]*)\;\s*[Hh]ospitalName\=([^;]*)\;\s*[Cc]ity\=([^;]*).*/ 
+systemtype=b.grep /.*EvtApplication.*|.*EvtApplication_\d+.*|.*EvtCustomerLog\_Today.*|.*EvtCustomerLog_\d+.*|.*EvtSystem.*|.*EvtSystem\_\d+.*/ /^\w+\s+\d+\-\d+\-\d+\s+\d+\:\d+\:\d+\s+CT_SCF\s+7.*SystemType\s*\=([^;]+)\;.*$/ 
+(swupgradepacks)=l.grepcur_sys_conf /.*SWUpgradePacks\s*\=([^;]+)\;.*$/ 
+(workplacetype)=l.grepcur_sys_conf /.*WorkplaceType\s*\=([^;]+)\;.*$/ 
+(materialnumber)=l.grepcur_sys_conf /.*MaterialNumber\s*\=([^;]+)\;.*$/ 
+(dataslipring)=l.grepcur_sys_conf /.*Data Slipring\s*\=([^;]+)\;.*$/ 
+(powerslipring)=l.grepcur_sys_conf /.*Power Slipring\s*\=([^;]+)\;.*$/ 
+(patienttable)=l.grepcur_sys_conf /.*Patient Table\s*\=([^;]+)\;.*$/ 
+(dms)=l.grepcur_sys_conf /.*DMS\s*\=([^;]+)\;.*$/ 
+(cooling)=l.grepcur_sys_conf /.*Cooling\s*\=([^;]+)\;.*$/ 
+(consecutivedayid)=l.grepcur_sys_conf /.*ConsecutiveDayId\s*\=([^;]+)\;.*$/ 
+b.id(sysid1,obs_ts) 
+b.assertOnUncompressionFailure 
+b.properties(sysid1,obs_ts,computername,version,country,hospitalname,city,systemtype,swupgradepacks,workplacetype ,materialnumber,dataslipring,powerslipring,patienttable,dms,cooling,consecutivedayid)
