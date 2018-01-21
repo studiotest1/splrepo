@@ -1,2 +1,58 @@
+DEFINE NAMESPACE ns_4_output1_txt DESCRIPTION 'NS 4' TYPE EVENT  SOLR 
+  BEGINS WITH /./
+  FILEPATTERN /(out4\/output1.txt)|(out4\/output2.txt)|(out4\/output3.txt)|(out4\/output4.txt)/
+;
+
+DEFINE NAMESPACE unparsed DESCRIPTION 'Unparsed' TYPE UNPARSED 
+;
+
+DEFINE TABLE unparsed NAMESPACE unparsed 
+ICON list_basic
+LINEGRAB /(.*)/
+
+COLUMN sysid1 (sys.static) [s(128):nn]  <facet='G', label='Serial Number', sysid1=1, linked=1>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN obs_date_str (obs.static) [s(64):n]  <facet='G', label='System Time'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN namespace_id  [s(2048):n]  <fragment_id=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false', uniquefielddef='true')
+COLUMN begin_offset  [i(64):n]  <begin_offset=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN obs_size  [i(64):n]  <obs_size=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN start_time  [i(64):n]  <label='Session Start Time'> 
+COLUMN obs_url (obs.static) [s(2048):n]  <obs_url=1, facet='G', label='Bundle URL'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN duration  [i(64):n]  <label='Session Duration'> 
+COLUMN content  [s(2048):n]  <content=1, facet='Z'>  WITH SOLRMAPPING (datatype='text_en', multivalued='false')
+COLUMN namespace  [s(2048):n]  <namespace=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN sess_name  [s(128):n]  <label='Session Name'> 
+COLUMN component  [s(64):n]  <label='Component'> 
+COLUMN obs_ts (obs.static) [i(64):nn]  <ts=1, facet='G', units='epoch'>  WITH SOLRMAPPING (name='obs_date', datatype='tdate', multivalued='false')
+COLUMN type  [s(20):n]  <type=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN sess_count  [i(64):n]  <label='Session Count'> 
+COLUMN uploaded_by (obs.static) [s(2048):n]  <label='user', uploaded_by=1>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN filename  [s(2048):n]  <filename=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN bundle_type (sys.static) [s(128):nn]  <facet='G', label='Bundle Type'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN end_time  [i(64):n]  <label='Session End Time'> 
+
+ADD_CONTEXT(obs_url,obs_ts,sysid1,obs_size,obs_date_str,source)
 
 
+
+;
+
+DEFINE TABLE tbl_out4_out4_output1_txt NAMESPACE ns_4_output1_txt 
+ICON list_basic
+LINEGRAB /./
+
+COLUMN c242910_  [s(1024):n]  AS 1
+COLUMN severity  [s(2048):n]  <label='severity', severity=1> 
+COLUMN sysid1 (sys.static) [s(128):nn]  <facet='G', label='Serial Number', sysid1=1, linked=1>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN obs_size  [i(64):n]  <obs_size=1, facet='Z'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN evt_text  [s(2048):n]  <label='Event Text'> 
+COLUMN obs_url (obs.static) [s(2048):n]  <obs_url=1, facet='G', label='Bundle URL'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN obs_ts (obs.static) [i(64):nn]  <ts=1, facet='G', units='epoch'>  WITH SOLRMAPPING (name='obs_date', datatype='tdate', multivalued='false')
+COLUMN evt_date_str  [s(128):n]  <facet='L', label='Event Date'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN source  [s(2048):n]  <facet='L', label='Data Source'>  WITH SOLRMAPPING (datatype='string', multivalued='false')
+COLUMN evt_epoch  [i(64):n]  <facet='G', units='epoch'>  WITH SOLRMAPPING (name='evt_date', datatype='tdate', multivalued='false')
+
+ADD_CONTEXT(sysid1,obs_ts,obs_url,source)
+
+
+
+;
