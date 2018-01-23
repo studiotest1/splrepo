@@ -41,7 +41,6 @@ ICON list_basic
 LINEGRAB /([^	]*)	(\d\d\d\d-\d+-\d+\t\d\d:\d\d:\d\d)	([^	]*)	([^	]*)	(.*)?/
 
 COLUMN c368778_col1_s  [s(1024):n]  <label='col1'>  AS 1
-COLUMN c368778_copied  [s(256):n]  <label='copied'> 
 COLUMN c368778_date_time  [s(256):n]  <label='date_time'>  AS 2
 COLUMN c368778_col2_s  [s(1024):n]  <label='col2'>  AS 3
 COLUMN c368778_col3_i  [i(64):n]  <label='col3'>  AS 4
@@ -61,6 +60,5 @@ ADD_CONTEXT(sysid1, obs_ts, obs_url, source)
 COLCOPY(c368778_date_time, evt_date_str)
 COLCALC(evt_epoch,SDF2EPOCH,'yyyy-MM-dd	HH:mm:ss',evt_date_str)
 COLCOPY(evt_epoch,obs_ts)
-COLCOPY(c368778_date_time, c368778_copied)
 
 ;
