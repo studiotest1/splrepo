@@ -43,6 +43,7 @@ LINEGRAB /([^	]*)	(\d\d\d\d-\d+-\d+\t\d\d:\d\d:\d\d)	([^	]*)	([^	]*)	(.*)?/
 COLUMN c342d7c_col1_s  [s(1024):n]  <label='col1'>  AS 1
 COLUMN c342d7c_date_time  [s(256):n]  <label='date_time'>  AS 2
 COLUMN c342d7c_testsplcol  [s(256):n]  <label='testsplcol'> 
+COLUMN c342d7c_copied  [s(256):n]  <label='copied'> 
 COLUMN c342d7c_col2_s  [s(1024):n]  <label='col2'>  AS 3
 COLUMN c342d7c_col3_i  [i(64):n]  <label='col3'>  AS 4
 COLUMN c342d7c_col4_s  [s(1024):n]  <label='col4'>  AS 5
@@ -62,5 +63,6 @@ COLCOPY(c342d7c_date_time, evt_date_str)
 COLCALC(evt_epoch,SDF2EPOCH,'yyyy-MM-dd	HH:mm:ss',evt_date_str)
 COLCOPY(evt_epoch,obs_ts)
 COLCOPY(c342d7c_date_time, c342d7c_testsplcol)
+COLCOPY(c342d7c_date_time, c342d7c_copied)
 
 ;
