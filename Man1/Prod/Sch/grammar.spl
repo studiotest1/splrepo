@@ -13,6 +13,7 @@ LINEGRAB /([^,]*),([^,]*),([^,]*),([^,]*),?([^,]*)?,?(.*)?/
 MULTILINE NOT /\w+\s+\w\w\w\s+\d+\s+\d\d:\d\d:\d\d\s+\w+\s+\d\d\d\d/ '~~'
 COLUMN c77c8d2_col1_s  [s(1024):n]  <label='col1'>  AS 1
 COLUMN c77c8d2_col2_s  [s(1024):n]  <label='col2'>  AS 2
+COLUMN c77c8d2_copd  [s(1024):n]  <label='copd'> 
 COLUMN c77c8d2_col3_s  [s(1024):n]  <label='col3'>  AS 3
 COLUMN c77c8d2_col4_r  [r(64):n]  <label='col4'>  AS 4
 COLUMN c77c8d2_date_time  [s(256):n]  <label='date_time'>  AS 5
@@ -38,6 +39,7 @@ COLREP(/~~/,'',c77c8d2_col5_s)
 COLCOPY(c77c8d2_date_time, evt_date_str)
 COLCALC(evt_epoch,SDF2EPOCH,'EEE MMM dd HH:mm:ss zzz yyyy',evt_date_str)
 COLCOPY(evt_epoch,obs_ts)
+COLCOPY(c77c8d2_col2_s, c77c8d2_copd)
 
 ;
 
